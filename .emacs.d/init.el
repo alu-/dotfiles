@@ -49,6 +49,8 @@
  '(package-selected-packages
    (quote
     (twig-mode ws-butler pyimport pyimpsort helm-phpunit phpunit magit groovy-mode jenkins csv-mode flymake-phpcs flymake-php helm-flymake fill-column-indicator find-file-in-project epc markdown-mode docker-compose-mode dockerfile-mode json-mode smarty-mode logview apache-mode undo-tree rjsx-mode jsx-mode jedi helm-git-grep helm-git ac-php ac-helm ac-etags))))
+(when (not package-archive-contents)
+  (package-refresh-contents))
 (package-install-selected-packages)
 
 ; Helm
