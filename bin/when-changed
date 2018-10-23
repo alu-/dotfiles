@@ -1,0 +1,6 @@
+#!/bin/bash
+invocation=./"$1"
+if ! [ -z "$2" ] ; then
+    invocation="$2"
+fi
+while inotifywait -qq -e close_write $1; do clear && $invocation; done

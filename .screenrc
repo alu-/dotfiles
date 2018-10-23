@@ -1,0 +1,39 @@
+# Allow bold colors - necessary for some reason
+attrcolor b ".I"
+
+# Tell screen how to set colors. AB = background, AF=foreground
+#termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+
+# Enables use of shift-PgUp and shift-PgDn
+termcapinfo xterm|xterms|xs|rxvt ti@:te@
+
+# Erase background with current bg color
+defbce "on"
+
+# Enable 256 color term
+term xterm-256color
+
+# Cache 30000 lines for scroll back
+defscrollback 30000
+
+hardstatus alwayslastline
+# Very nice tabbed colored hardstatus line
+hardstatus string '%{= Kd} %{= Kd}%-w%{= Kr}[%{= KW}%n %t%{= Kr}]%{= Kd}%+w %-= %{KG} %H%{KW} | %{= Kc}%c %{KY}%101`%{Kd}%D %M %d %Y}'
+
+# change command character from ctrl-a to ctrl-b (emacs users may want this)
+#escape ^Bb
+
+layout save default
+
+# get rid of silly xoff stuff
+bind s split
+
+# Hide hardstatus: ctrl-a f
+bind f eval "hardstatus ignore"
+# Show hardstatus: ctrl-a F
+bind F eval "hardstatus alwayslastline"
+
+bind h eval "focus left"
+bind j eval "focus down"
+bind k eval "focus up"
+bind l eval "focus right"
