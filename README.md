@@ -7,12 +7,13 @@ zoinks!
 * thefuck 3.11-2
 * ngp 1.4
 * fd 7.1.0
+* parallel
 
 ### Quick installation
 
 #### Ubuntu 18.04
 ```shell
-sudo apt-get install emacs25 screen thefuck fd
+sudo apt-get install emacs25 screen thefuck fd parallel
 ```
 
 ### Manual installations
