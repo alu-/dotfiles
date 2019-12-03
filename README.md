@@ -11,9 +11,9 @@ zoinks!
 
 ### Quick installation
 
-#### Ubuntu 18.04
+#### Debian 10
 ```shell
-sudo apt-get install emacs25 screen thefuck fd parallel
+sudo apt install emacs25 screen thefuck fd-find parallel
 ```
 
 ### Manual installations
