@@ -1,0 +1,4 @@
+#!/bin/bash
+if [[ `acpi -b | grep Discharging` && `acpi -b | cut -f 5 -d " "` < 00:30:00 ]] ; then
+    DISPLAY=:0 i3-nagbar -t warning -m "One of your batteries are running low" -B "Hibernate" "systemctl hibernate; killall i3-nagbar"
+fi
