@@ -13,7 +13,7 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:DejaVu Sans Mono 9
+font pango:DejaVu Sans Mono 8
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -170,12 +170,15 @@ bar {
         status_command i3status
 }
 
+focus_follows_mouse no
+
 assign [class="Firefox"] 2
 for_window [class="Spotify"] move to workspace 3
 
 exec --no-startup-id feh --bg-fill ~/.config/i3/wallpaper.png
 exec --no-startup-id parcellite
 exec --no-startup-id blueman-applet
-exec urxvt -e bash -c "neofetch && bash"
+exec --on-startup-id volumeicon
 exec firefox
 exec spotify
+exec urxvt -e bash -c "neofetch && bash"
