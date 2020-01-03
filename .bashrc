@@ -119,7 +119,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/bin:$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 
 export PYTHONDONTWRITEBYTECODE=1
 export PYTHONUNBUFFERED=1
