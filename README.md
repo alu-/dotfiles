@@ -13,7 +13,7 @@ zoinks!
 
 #### Debian 10
 ```shell
-sudo apt install emacs25 screen thefuck fd-find parallel
+sudo apt install emacs25 screen thefuck fd-find parallel cowsay fortune
 ```
 
 ### Manual installations
