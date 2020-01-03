@@ -181,16 +181,26 @@ bar {
 
 focus_follows_mouse no
 
+# Window rules (assign, for_window)
 assign [class="Firefox"] 2
 for_window [class="Spotify"] move to workspace 3
 
+# Tray icons, background, etc
 exec --no-startup-id feh --bg-fill ~/.config/i3/wallpaper.png
 exec --no-startup-id parcellite
 exec --no-startup-id blueman-applet
-exec --on-startup-id volumeicon
+exec --no-startup-id volumeicon
+
+# Workspace 1
+exec --no-startup-id "i3-msg 'workspace 1; append_layout /home/alu/.config/i3/workspace-1.json'"
+exec urxvt -e bash -c "neofetch && bash"
+exec urxvt -e bash -c "fortune -s | cowsay -f tux && bash"
+exec emacs
+
+# Misc windows
 exec firefox
 exec spotify
-exec urxvt -e bash -c "neofetch && bash"
+
 client.focused #d70a53 #d70a53 #ffffff #8c0333
 client.focused_inactive #333333 #333333 #888888 #333333
 client.unfocused #333333 #333333 #888888 #333333
