@@ -1,4 +1,4 @@
-#+TITLE: Emacs configuration
+''#+TITLE: Emacs configuration
 #+AUTHOR: Mostly angrybacon, with modifications by alu
 #+DESCRIPTION: See https://raw.githubusercontent.com/angrybacon/dotemacs/master/dotemacs.org
 
@@ -49,6 +49,7 @@
   - [[#alus-fixes][alu's fixes]]
   - [[#alus-keybindings][alu's keybindings]]
   - [[#alus-packages][alu's packages]]
+  - [[#alus-hooks][alu's hooks]]
 
 * Bootstrap
 
@@ -419,9 +420,9 @@ maintain a TOC at the first heading that has a =:TOC:= tag.
   :ensure nil
   :hook (python-mode . turn-on-prettify-symbols-mode)
   :config
-  (when (executable-find "ipython")
+  (when (executable-find "ipython3")
     (setq-default
-     python-shell-interpreter "ipython"
+     python-shell-interpreter "ipython3"
      python-shell-interpreter-args "--colors=Linux --profile=default --simple-prompt"
      python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
      python-shell-prompt-regexp "In \\[[0-9]+\\]: "
@@ -487,6 +488,7 @@ completion candidates.
   (company-require-match nil)
   (company-tooltip-align-annotations t))
 #+END_SRC
+
 
 ** Buffers and Windows
 
@@ -741,7 +743,6 @@ leaner, modular, and unchained from constraints of backward compatibility.
   :bind
   (([remap execute-extended-command] . helm-M-x)
    ([remap find-file] . helm-find-files)
-   ([remap isearch-forward] . helm-occur)
    ([remap switch-to-buffer] . helm-buffers-list)
    :map helm-map
    ("<left>" . backward-char)
@@ -1456,11 +1457,11 @@ today... No package seem to please my person.
 #+BEGIN_SRC emacs-lisp
 (use-package smartparens
   :bind
-  (("M-<backspace>" . sp-unwrap-sexp)
-   ("M-<left>" . sp-forward-barf-sexp)
-   ("M-<right>" . sp-forward-slurp-sexp)
-   ("M-S-<left>" . sp-backward-slurp-sexp)
-   ("M-S-<right>" . sp-backward-barf-sexp))
+  (("C-<backspace>" . sp-unwrap-sexp)
+   ("C-<left>" . sp-forward-barf-sexp)
+   ("C-<right>" . sp-forward-slurp-sexp)
+   ("C-S-<left>" . sp-backward-slurp-sexp)
+   ("C-S-<right>" . sp-backward-barf-sexp))
   :hook
   (after-init . smartparens-global-mode)
   :custom
@@ -1561,9 +1562,7 @@ use with =selected=.
         ("C-s r"       . reverse-region)
         ("C-s s"       . sort-lines)
         ("C-s w"       . me/sort-words)
-        ("C-t"         . google-translate-at-point)
-        ("<M-left>"    . me/indent-rigidly-left-and-keep-mark)
-        ("<M-right>"   . me/indent-rigidly-right-and-keep-mark)
+        ("C-t"         . gogole-translate-at-point)
         ("<M-S-left>"  . me/indent-rigidly-left-tab-and-keep-mark)
         ("<M-S-right>" . me/indent-rigidly-right-tab-and-keep-mark))
   :hook (after-init . selected-global-mode)
@@ -2029,12 +2028,71 @@ Fixing left and right arrows changed in newer emacs for helm
 
 ** alu's keybindings
 
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "<f1>") 'helm-projectile-find-file)
+(global-set-key (kbd "M-r") 'replace-string)
+(global-set-key (kbd "<backspace>")
+          '(lambda () (interactive) (backward-delete-char-untabify 1 nil)))
+(global-set-key (kbd "C-c c") 'comment-or-uncomment-region)
+(global-set-key (kbd "C-c i") 'helm-imenu)
+#+END_SRC
+
 ** alu's packages
 
 Various packages I use
 
 #+BEGIN_SRC emacs-lisp
+(use-package cedet)
 (use-package ws-butler)
-(add-hook 'php-mode-hook #'ws-butler-mode)
-(add-hook 'python-mode-hook #'ws-butler-mode)
+(use-package bash-completion)
+(use-package semantic)
+(use-package undo-tree)
+(global-undo-tree-mode)
+#+END_SRC
+
+** alu's hooks
+
+#+BEGIN_SRC emacs-lisp
+(setq semantic-default-submodes
+      '(;; Perform semantic actions during idle time
+        global-semantic-idle-scheduler-mode
+        ;; Use a database of parsed tags
+        global-semanticdb-minor-mode
+        ;; Decorate buffers with additional semantic information
+        global-semantic-decoration-mode
+        ;; Highlight the name of the function you're currently in
+        global-semantic-highlight-func-mode
+        ;; show the name of the function at the top in a sticky
+        global-semantic-stickyfunc-mode
+        ;; Generate a summary of the current tag when idle
+        global-semantic-idle-summary-mode
+        ;; Show a breadcrumb of location during idle time
+        global-semantic-idle-breadcrumbs-mode
+        ;; Show idle completions
+        global-semantic-idle-completions-mode
+        ;; Switch to recently changed tags with `semantic-mrub-switch-tags',
+        ;; or `C-x B'
+        global-semantic-mru-bookmark-mode))
+
+(setq company-backends
+      '((company-files          ; files & directory
+         company-keywords       ; keywords
+         company-dabbrev-code
+         company-gtags
+         company-etags
+         company-capf
+         company-yasnippet
+         company-semantic
+         )
+        (company-abbrev company-dabbrev)
+        ))
+
+(defun alu-code-editing ()
+  "Activate various minor-modes that are usefull when editing code"
+  (interactive)
+  (ws-butler-mode 1)
+  (semantic-mode 1))
+
+(add-hook 'php-mode-hook #'alu-code-editing)
+(add-hook 'python-mode-hook #'alu-code-editing)
 #+END_SRC
