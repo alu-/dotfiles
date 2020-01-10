@@ -2037,6 +2037,7 @@ Highlight space-like characters, eg. trailing spaces, tabs, empty lines.
           '(lambda () (interactive) (backward-delete-char-untabify 1 nil)))
 (global-set-key (kbd "C-c c") 'comment-or-uncomment-region)
 (global-set-key (kbd "C-c i") 'helm-imenu)
+(global-set-key (kbd "C-c .") 'semantic-ia-fast-jump)
 #+END_SRC
 
 ** packages
@@ -2048,7 +2049,10 @@ Various packages I use
 (use-package ws-butler)
 (use-package bash-completion)
 (use-package semantic)
-(use-package php-mode)
+(use-package ede-php-autoload)
+(use-package php-mode
+  :bind (:map php-mode-map ([remap c-set-style] . semantic-ia-fast-jump))
+)
 (use-package flycheck-phpstan)
 (use-package undo-tree)
 (global-undo-tree-mode)
@@ -2096,6 +2100,7 @@ Various packages I use
   (interactive)
   (require 'flycheck-phpstan)
   (flycheck-mode t)
+  (ede-php-autoload-mode)
   (ws-butler-mode 1)
   (semantic-mode 1))
 
