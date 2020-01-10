@@ -1,4 +1,4 @@
-''#+TITLE: Emacs configuration
+#+TITLE: Emacs configuration
 #+AUTHOR: Mostly angrybacon, with modifications by alu
 #+DESCRIPTION: See https://raw.githubusercontent.com/angrybacon/dotemacs/master/dotemacs.org
 
@@ -46,10 +46,11 @@
   - [[#shell-and-terminal][Shell and Terminal]]
   - [[#version-control][Version Control]]
   - [[#whitespaces][Whitespaces]]
-  - [[#alus-fixes][alu's fixes]]
-  - [[#alus-keybindings][alu's keybindings]]
-  - [[#alus-packages][alu's packages]]
-  - [[#alus-hooks][alu's hooks]]
+- [[#alu][alu]]
+  - [[#fixes][fixes]]
+  - [[#keybindings][keybindings]]
+  - [[#packages][packages]]
+  - [[#hooks][hooks]]
 
 * Bootstrap
 
@@ -441,7 +442,6 @@ maintain a TOC at the first heading that has a =:TOC:= tag.
 #+END_SRC
 
 * Features
-
 ** Alert
 
 #+BEGIN_QUOTE
@@ -1153,6 +1153,7 @@ binaries (see [[./README.org][README.org]]).
   ((css-mode . flycheck-mode)
    (emacs-lisp-mode . flycheck-mode)
    (js-mode . flycheck-mode)
+   (php-mode . flycheck-mode)
    (python-mode . flycheck-mode))
   :custom
   (flycheck-check-syntax-automatically '(save mode-enabled))
@@ -2010,23 +2011,24 @@ Highlight space-like characters, eg. trailing spaces, tabs, empty lines.
 
 -----
 
-[[#dotemacs][Back to top]]
-** alu's fixes
+[[#dotemacs][Back to to
+* alu
+** fixes
 
-Various fixes I've implemented.
+ Various fixes I've implemented.
 
-Fixing left and right arrows changed in newer emacs for helm
+ Fixing left and right arrows changed in newer emacs for helm
 
-#+BEGIN_SRC emacs-lisp
-(define-key helm-map (kbd "<left>") 'helm-previous-source)
-(define-key helm-map (kbd "<right>") 'helm-next-source)
-(customize-set-variable 'helm-ff-lynx-style-map t)
-(customize-set-variable 'helm-imenu-lynx-style-map t)
-(customize-set-variable 'helm-semantic-lynx-style-map t)
-(customize-set-variable 'helm-occur-use-ioccur-style-keys t)
-#+END_SRC
+ #+BEGIN_SRC emacs-lisp
+ (define-key helm-map (kbd "<left>") 'helm-previous-source)
+ (define-key helm-map (kbd "<right>") 'helm-next-source)
+ (customize-set-variable 'helm-ff-lynx-style-map t)
+ (customize-set-variable 'helm-imenu-lynx-style-map t)
+ (customize-set-variable 'helm-semantic-lynx-style-map t)
+ (customize-set-variable 'helm-occur-use-ioccur-style-keys t)
+ #+END_SRC
 
-** alu's keybindings
+** keybindings
 
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "<f1>") 'helm-projectile-find-file)
@@ -2037,7 +2039,7 @@ Fixing left and right arrows changed in newer emacs for helm
 (global-set-key (kbd "C-c i") 'helm-imenu)
 #+END_SRC
 
-** alu's packages
+** packages
 
 Various packages I use
 
@@ -2046,11 +2048,13 @@ Various packages I use
 (use-package ws-butler)
 (use-package bash-completion)
 (use-package semantic)
+(use-package php-mode)
+(use-package flycheck-phpstan)
 (use-package undo-tree)
 (global-undo-tree-mode)
 #+END_SRC
 
-** alu's hooks
+** hooks
 
 #+BEGIN_SRC emacs-lisp
 (setq semantic-default-submodes
@@ -2090,6 +2094,8 @@ Various packages I use
 (defun alu-code-editing ()
   "Activate various minor-modes that are usefull when editing code"
   (interactive)
+  (require 'flycheck-phpstan)
+  (flycheck-mode t)
   (ws-butler-mode 1)
   (semantic-mode 1))
 
